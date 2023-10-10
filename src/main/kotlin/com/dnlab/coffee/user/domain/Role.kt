@@ -1,4 +1,4 @@
-package com.dnlab.coffee.security.domain
+package com.dnlab.coffee.user.domain
 
 enum class Role {
     ROLE_ADMIN,

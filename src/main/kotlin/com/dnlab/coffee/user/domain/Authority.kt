@@ -1,7 +1,6 @@
 package com.dnlab.coffee.user.domain
 
 import com.dnlab.coffee.global.domain.BaseEntity
-import com.dnlab.coffee.security.domain.Role
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated

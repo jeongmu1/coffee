@@ -15,7 +15,9 @@ class User(
     @Column(nullable = false, unique = true)
     val phone: String,
     @Column(nullable = false)
-    val address: String
+    val address: String,
+    @Column(nullable = false)
+    val enabled: Boolean = true
 ) : BaseTimeEntity() {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private val _customerOrders: MutableList<CustomerOrder> = mutableListOf()
