@@ -16,11 +16,17 @@ class SecurityConfig {
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-        httpSecurity.logout().logoutSuccessUrl("/")
+        httpSecurity
+            .formLogin()
+            .loginPage("/user/admin/login")
             .and()
+
+            .logout().logoutSuccessUrl("/")
+            .and()
+
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("vendor","/vendor/**").hasRole("ADMIN")
+                    .requestMatchers("vendor", "/vendor/**").hasRole("ADMIN")
                     .requestMatchers("/", "/**").permitAll()
             }
 

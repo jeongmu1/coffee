@@ -2,6 +2,7 @@ package com.dnlab.coffee.security.service
 
 import com.dnlab.coffee.security.UserDetailsImpl
 import com.dnlab.coffee.user.repository.AdminRepository
+import com.dnlab.coffee.user.repository.AuthorityRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -10,13 +11,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserDetailsServiceImpl(
-    private val adminRepository: AdminRepository
+    private val adminRepository: AdminRepository,
+    private val authorityRepository: AuthorityRepository
 ): UserDetailsService {
 
     @Transactional(readOnly = true)
     override fun loadUserByUsername(username: String?): UserDetails {
         val user = username?.let { adminRepository.findAdminByUsername(username) }
             ?: throw UsernameNotFoundException("User not found.")
-        return UserDetailsImpl(user = user, authorities = user.authorities)
+        return UserDetailsImpl(user = user, authorities = authorityRepository.findAuthoritiesByAdmin(user))
     }
 }
