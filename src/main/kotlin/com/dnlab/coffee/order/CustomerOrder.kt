@@ -1,7 +1,7 @@
 package com.dnlab.coffee.order
 
 import com.dnlab.coffee.global.domain.BaseEntity
-import com.dnlab.coffee.user.domain.User
+import com.dnlab.coffee.user.domain.Customer
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 class CustomerOrder(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    val user: User,
+    val customer: Customer,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val paymentType: PaymentType

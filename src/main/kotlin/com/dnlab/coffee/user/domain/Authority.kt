@@ -12,5 +12,5 @@ class Authority(
     @Enumerated(EnumType.STRING)
     val role: Role,
     @ManyToOne(fetch = FetchType.EAGER)
-    val user: User
+    val admin: Admin
 ) : BaseEntity()
