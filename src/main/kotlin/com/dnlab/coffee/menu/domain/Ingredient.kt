@@ -12,5 +12,7 @@ class Ingredient(
     val name: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val measurementUnit: MeasurementUnit
+    val measurementUnit: MeasurementUnit,
+    @Column(nullable = false)
+    val stock: Double
 ): BaseEntity()
