@@ -21,7 +21,7 @@ spring:
         order_inserts: true
         order_updates: true
         hbm2ddl:
-          auto: create
+          auto: update
     open-in-view: true
     show-sql: false
 

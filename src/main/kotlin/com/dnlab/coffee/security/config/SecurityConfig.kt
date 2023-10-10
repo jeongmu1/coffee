@@ -19,7 +19,9 @@ class SecurityConfig {
         httpSecurity.logout().logoutSuccessUrl("/")
             .and()
             .authorizeHttpRequests {
-                it.requestMatchers("/", "/**").permitAll()
+                it
+                    .requestMatchers("vendor","/vendor/**").hasRole("ADMIN")
+                    .requestMatchers("/", "/**").permitAll()
             }
 
         return httpSecurity.orBuild
