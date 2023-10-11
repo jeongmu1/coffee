@@ -18,7 +18,7 @@ class SecurityConfig {
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity
             .formLogin()
-            .loginPage("/user/admin/login")
+            .loginPage("/user/admin/login").loginProcessingUrl("/admin")
             .and()
 
             .logout().logoutSuccessUrl("/")
@@ -26,7 +26,10 @@ class SecurityConfig {
 
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("vendor", "/vendor/**").hasRole("ADMIN")
+                    .requestMatchers("/vendor", "/vendor/**",
+                        "/ingredient", "/ingredient/**",
+                        "/supply", "/supply/**",
+                        "/menu", "/menu/**").hasRole("ADMIN")
                     .requestMatchers("/", "/**").permitAll()
             }
 
