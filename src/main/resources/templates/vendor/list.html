@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>공급업체</title>
+</head>
+<body>
+  <table>
+    <th>코드</th>
+    <th>업체명</th>
+    <th>주소</th>
+    <th>생성날짜</th>
+    <th>수정날짜</th>
+    <tbody>
+    <tr th:each="vendor : ${vendors}">
+      <td th:text="${vendor.id}"></td>
+      <td th:text="${vendor.name}"></td>
+      <td th:text="${vendor.address}"></td>
+      <td th:text="${vendor.createdAt}"></td>
+      <td th:text="${vendor.updatedAt}"></td>
+    </tr>
+    </tbody>
+  </table><br/>
+
+  <form th:action="@{/vendor/new}" method="get">
+    <input type="submit" th:action="@{/vendor/new}" value="새 업체">
+  </form>
+</body>
+</html>

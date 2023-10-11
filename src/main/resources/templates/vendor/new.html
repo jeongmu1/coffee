@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>공급업체 추가</title>
+</head>
+<body>
+<form method="post" th:action="@{/vendor/new}" id="form">
+  <label for="name">업체명:
+    <input type="text" name="name" id="name"></label><br/>
+  <label for="name">업체주소:
+    <input type="text" name="address" id="address"></label><br/>
+  <input type="submit" value="제출">
+</form>
+</body>
+</html>
