@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>재료</title>
+</head>
+<body>
+<table>
+  <th>재료명</th>
+  <th>측정단위</th>
+  <th>재고량</th>
+  <tbody>
+  <tr th:each="ingredient : ${ingredients}">
+    <td th:text="${ingredient.name}"></td>
+    <td th:text="${ingredient.measurementUnit.unit}"></td>
+    <td th:text="${ingredient.stock}"></td>
+  </tr>
+  </tbody>
+</table><br/>
+
+<form th:action="@{/ingredient/new}" method="get">
+  <input type="submit" value="새 재료">
+</form>
+</body>
+</html>

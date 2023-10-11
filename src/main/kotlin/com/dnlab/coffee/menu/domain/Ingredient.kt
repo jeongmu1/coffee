@@ -14,5 +14,5 @@ class Ingredient(
     @Column(nullable = false)
     val measurementUnit: MeasurementUnit,
     @Column(nullable = false)
-    val stock: Double
+    val stock: Double = 0.0
 ): BaseEntity()

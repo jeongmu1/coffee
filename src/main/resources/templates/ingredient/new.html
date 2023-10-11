@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <title>Add New Ingredient</title>
+</head>
+<body>
+
+<h1>재료추가</h1>
+
+<form th:action="@{/ingredient/new}" method="post">
+  <label for="name">재료명:
+    <input type="text" name="name" id="name"></label><br/>
+
+  <p>측정단위:</p>
+  <p th:each="unit : ${measurementUnits}">
+    <label for="measurementUnit"></label>
+    <input type="radio" name="measurementUnit" id="measurementUnit" th:value="${unit}" required/>
+    <span th:text="${unit.unit}"></span>
+  </p>
+  <p><input type="submit" value="Submit"/></p>
+</form>
+
+</body>
+</html>
