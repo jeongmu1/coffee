@@ -16,7 +16,7 @@ class Supply(
     val price: Int,
     @Column(nullable = false)
     val deliveryDate: LocalDate,
-    val actualDeliveryDate: LocalDate?,
+    var actualDeliveryDate: LocalDate?,
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     val vendor: Vendor,
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

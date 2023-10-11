@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>새 공급</title>
+</head>
+<body>
+<form th:action="@{/supply/new}" method="post">
+  <label for="ingredientName">재료명:
+    <input type="text" id="ingredientName" name="ingredientName">
+  </label><br>
+  <label for="vendorId">공급업체코드:
+    <input type="text" id="vendorId" name="vendorId">
+  </label><br>
+  <label for="deliveryDate">납기일:
+    <input type="date" id="deliveryDate" name="deliveryDate">
+  </label><br>
+  <label for="actualDeliveryDate">실납기일:
+    <input type="date" id="actualDeliveryDate" name="actualDeliveryDate">
+  </label><br>
+  <label for="price">가격:
+    <input type="number" id="price" name="price">
+  </label><br>
+  <label for="quantity">양:
+    <input type="text" id="quantity" name="quantity">
+  </label><br>
+  <input type="submit">
+</form>
+</body>
+</html>

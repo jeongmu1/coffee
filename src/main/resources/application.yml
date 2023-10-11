@@ -4,6 +4,11 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/coffee
     username: bookmaster

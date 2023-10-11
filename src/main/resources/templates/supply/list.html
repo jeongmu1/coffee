@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>공급 기록</title>
+</head>
+<body>
+
+<form th:action="@{/supply/history}" method="get">
+  <label>
+    <input type="text" th:name="ingredient"/>
+  </label>
+  <input type="submit" value="검색">
+</form>
+<table>
+  <th>재료</th>
+  <th>공급업체명</th>
+  <th>양</th>
+  <th>측정단위</th>
+  <th>가격</th>
+  <th>납기</th>
+  <th>실납기</th>
+  <th>실납기입력</th>
+  <tbody>
+  <tr th:each="supply : ${supplies}">
+    <td th:text="${supply.ingredientName}"></td>
+    <td th:text="${supply.vendorName}"></td>
+    <td th:text="${supply.quantity}"></td>
+    <td th:text="${supply.measurementUnit}"></td>
+    <td th:text="${supply.price}"></td>
+    <td th:text="${supply.deliveryDate}"></td>
+    <td th:text="${supply.actualDeliveryDate}"></td>
+    <td th:if="${supply.actualDeliveryDate == null}">
+      <form
+          th:action="@{/supply/actual-delivery-date}"
+          th:method="patch">
+        <label for="actualDeliveryDate">
+          <input type="date" id="actualDeliveryDate" name="actualDeliveryDate">
+        </label>
+        <input type="hidden" th:value="*{supply.supplyId}" id="supplyId" name="supplyId">
+        <input type="submit" value="제출">
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<br/>
+
+<form th:action="@{/ingredient/new}" method="get">
+  <input type="submit" value="새 재료">
+</form>
+</body>
+</html>
