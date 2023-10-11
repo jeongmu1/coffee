@@ -35,22 +35,29 @@ class SupplyService(
         val vendor = vendorRepository.findVendorById(supplyForm.vendorId)
             ?: throw NoSuchElementException("해당 공급업체는 존재하지 않습니다.")
 
-        ingredient.stock += supplyForm.quantity
+        if (supplyForm.actualDeliveryDate != null) {
+            ingredient.stock += supplyForm.quantity
+        }
 
-        supplyRepository.save(Supply(
-            price = supplyForm.price,
-            quantity = supplyForm.quantity,
-            ingredient = ingredient,
-            vendor = vendor,
-            deliveryDate = supplyForm.deliveryDate,
-            actualDeliveryDate = supplyForm.actualDeliveryDate
-        ))
+        supplyRepository.save(
+            Supply(
+                price = supplyForm.price,
+                quantity = supplyForm.quantity,
+                ingredient = ingredient,
+                vendor = vendor,
+                deliveryDate = supplyForm.deliveryDate,
+                actualDeliveryDate = supplyForm.actualDeliveryDate
+            )
+        )
     }
 
     @Transactional
     fun inputActualDeliveryDate(form: ActualDeliveryDateForm) {
         supplyRepository.findSupplyById(form.supplyId)
-            ?.let { it.actualDeliveryDate = form.actualDeliveryDate }
+            ?.let {
+                it.actualDeliveryDate = form.actualDeliveryDate
+                it.ingredient.stock += it.quantity
+            }
             ?: throw NoSuchElementException("해당 공급 내역은 존재하지 않습니다.")
     }
 
