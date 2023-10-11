@@ -1,4 +1,4 @@
-package com.dnlab.coffee.order
+package com.dnlab.coffee.order.domain
 
 enum class PaymentType {
     CASH,

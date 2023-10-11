@@ -1,7 +1,7 @@
 package com.dnlab.coffee.user.domain
 
 import com.dnlab.coffee.global.domain.BaseTimeEntity
-import com.dnlab.coffee.order.CustomerOrder
+import com.dnlab.coffee.order.domain.CustomerOrder
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

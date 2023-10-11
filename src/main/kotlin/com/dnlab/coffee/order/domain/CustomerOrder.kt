@@ -1,4 +1,4 @@
-package com.dnlab.coffee.order
+package com.dnlab.coffee.order.domain
 
 import com.dnlab.coffee.global.domain.BaseEntity
 import com.dnlab.coffee.user.domain.Customer
