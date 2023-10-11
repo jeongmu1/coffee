@@ -10,6 +10,7 @@ class WebConfig: WebMvcConfigurer {
         with(registry) {
             addViewController("/").setViewName("index")
             addViewController("/user/admin/login").setViewName("admin/login")
+            addViewController("/admin").setViewName("admin/index")
         }
     }
 }

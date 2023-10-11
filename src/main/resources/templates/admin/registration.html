@@ -7,10 +7,10 @@
 <body>
 <form method="POST" th:action="@{/user/admin/new}" id="registrationForm">
   <label for="username">아이디:
-    <input type="text" name="username"></label><br/>
+    <input type="text" id="username" name="username"></label><br/>
 
   <label for="password">비밀번호:
-    <input type="password" name="password"></label><br/>
+    <input type="password" id="password" name="password"></label><br/>
 
   <input type="submit" value="회원가입">
 </form>
