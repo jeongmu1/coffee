@@ -17,4 +17,6 @@ class Menu(
     private val _recipes: MutableList<Recipe> = mutableListOf()
     val recipes: List<Recipe>
         get() = _recipes
+
+    fun isSoldOuted(): Boolean = this.recipes.any { (it.quantity - it.ingredient.stock) < 0 }
 }

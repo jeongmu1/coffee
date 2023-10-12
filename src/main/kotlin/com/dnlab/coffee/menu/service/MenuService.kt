@@ -29,6 +29,6 @@ class MenuService(
             name = this.name,
             price = this.price,
             productType = this.productType,
-            soldOuted = this.recipes.any { (it.quantity - it.ingredient.stock) < 0 }
+            soldOuted = this.isSoldOuted()
         )
 }
