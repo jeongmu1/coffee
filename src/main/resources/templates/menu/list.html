@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>메뉴</title>
+</head>
+<body>
+<h1>메뉴</h1>
+<table>
+  <thead>
+  <tr>
+    <th>메뉴명</th>
+    <th>가격</th>
+    <th>분류</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="menu : ${menus}">
+    <td><a th:href="@{/menu/detail(id=${menu.id})}" th:text="${menu.name}"></a></td>
+    <td th:text="${menu.price}"></td>
+    <td th:text="${menu.productType}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

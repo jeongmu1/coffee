@@ -1,5 +1,6 @@
 package com.dnlab.coffee.menu.service
 
+import com.dnlab.coffee.global.util.LoggerDelegate
 import com.dnlab.coffee.menu.domain.Menu
 import com.dnlab.coffee.menu.dto.MenuDisplay
 import com.dnlab.coffee.menu.repository.MenuRepository
@@ -10,13 +11,21 @@ import org.springframework.transaction.annotation.Transactional
 class MenuService(
     private val menuRepository: MenuRepository
 ) {
-    @Transactional(readOnly = true)
-    fun getMenus(): List<MenuDisplay> =
-        menuRepository.findAll().map { it.toDisplay() }
+    private val logger by LoggerDelegate()
 
     @Transactional(readOnly = true)
-    fun getMenus(name: String): List<MenuDisplay> =
-        menuRepository.findMenusByNameContains(name).map { it.toDisplay() }
+    fun getMenus(): List<MenuDisplay> {
+        val menus = menuRepository.findAll().map { it.toDisplay() }
+        logger.info("menus : $menus")
+        return menus
+    }
+
+    @Transactional(readOnly = true)
+    fun getMenus(name: String): List<MenuDisplay> {
+        val menus = menuRepository.findMenusByNameContains(name).map { it.toDisplay() }
+        logger.info("menus : $menus")
+        return menus
+    }
 
     @Transactional(readOnly = true)
     fun getMenu(id: Long): MenuDisplay =
@@ -28,7 +37,7 @@ class MenuService(
             id = this.id,
             name = this.name,
             price = this.price,
-            productType = this.productType,
+            productType = this.productType.title,
             soldOuted = this.isSoldOuted()
         )
 }

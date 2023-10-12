@@ -29,7 +29,7 @@ class SecurityConfig {
                     .requestMatchers("/vendor", "/vendor/**",
                         "/ingredient", "/ingredient/**",
                         "/supply", "/supply/**",
-                        "/menu", "/menu/**").hasRole("ADMIN")
+                        "/menu/admin", "/menu/admin/**").hasRole("ADMIN")
                     .requestMatchers("/", "/**").permitAll()
             }
 
