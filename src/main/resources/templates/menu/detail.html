@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>메뉴 상세</title>
 </head>
+<script>
+  function submitForm(action) {
+    document.getElementById('orderForm').action = action;
+    document.getElementById('orderForm').submit();
+  }
+</script>
+<style>
+  span {
+    font-size: 30px;
+  }
+</style>
 <body>
+<h1>메뉴 상세</h1>
+<span>제품명 : <span th:text="${menu.name}"></span></span><br>
+<span>가격 : <span th:text="${menu.price}"></span></span><br>
+<span>분류 : <span th:text="${menu.productType}"></span></span><br>
 
+<h2>장바구니 담기</h2>
+<form id="orderForm" method="post" th:action="@{/order/cart}">
+  <input type="hidden" id="itemId" name="itemId" th:value="*{menu.id}">
+  <label for="quantity">
+    <input type="number" id="quantity" name="quantity" placeholder="수량">
+  </label>
+  <input type="submit" value="장바구니 담기" onclick="submitForm('/order/cart')">
+  <input type="submit" value="바로 주문" onclick="submitForm('/order/direct')">
+</form>
+<a th:href="@{/menu}">메뉴로 돌아가기</a>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.dnlab.coffee.order.controller
 
+import com.dnlab.coffee.global.util.LoggerDelegate
 import com.dnlab.coffee.order.domain.PaymentType
 import com.dnlab.coffee.order.dto.Cart
 import com.dnlab.coffee.order.dto.CartItem
@@ -20,6 +21,8 @@ class OrderController(
     private val orderService: OrderService,
     private val customerService: CustomerService
 ) {
+    private val logger by LoggerDelegate()
+
     @ModelAttribute("cart")
     fun getCart(session: HttpSession): Cart =
         getCartFromSession(session)
@@ -35,9 +38,12 @@ class OrderController(
         session: HttpSession
     ): String {
         val cart = getCartFromSession(session)
-        cart.items.add(cartItem)
+        cart.items.find { it.itemId == cartItem.itemId }?.apply {
+            quantity += cartItem.quantity
+        } ?: cart.items.add(cartItem)
+        logger.info("Cart Currently : ${cart.items}")
 
-        TODO("return view")
+        return "redirect:/menu"
     }
 
     @PostMapping
