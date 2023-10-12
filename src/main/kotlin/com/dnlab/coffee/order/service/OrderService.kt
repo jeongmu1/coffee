@@ -32,7 +32,10 @@ class OrderService(
                 paymentType = paymentType
             )
         )
-        cart.items.forEach { orderMenuRepository.save(it.toEntity(order)) }
+        cart.items.forEach { cartItem ->
+            val orderMenu = orderMenuRepository.save(cartItem.toEntity(order))
+            orderMenu.menu.recipes.forEach { it.ingredient.stock -= orderMenu.quantity * it.quantity }
+        }
     }
 
     fun convertCartToDtoList(cart: Cart): List<CartItemDisplay> =

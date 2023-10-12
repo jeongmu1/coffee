@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <title>회원가입</title>
+</head>
+<body>
+
+<h1>회원가입</h1>
+
+<form th:action="@{/customer/new}" method="post">
+  <label for="name">이름:
+    <input type="text" name="name" id="name"></label><br/>
+
+  <label for="phone">휴대전화번호:
+    <input type="text" name="phone" id="phone"></label><br/>
+
+  <label for="address">주소:
+    <input type="text" name="address" id="address"></label><br/>
+
+  <p><input type="submit" value="Submit"/></p>
+</form>
+
+</body>
+</html>
