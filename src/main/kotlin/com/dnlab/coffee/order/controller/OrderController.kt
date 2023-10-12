@@ -4,6 +4,7 @@ import com.dnlab.coffee.order.domain.PaymentType
 import com.dnlab.coffee.order.dto.Cart
 import com.dnlab.coffee.order.dto.CartItem
 import com.dnlab.coffee.order.service.OrderService
+import com.dnlab.coffee.user.service.CustomerService
 import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 @RequestMapping("/order")
 class OrderController(
-    private val orderService: OrderService
+    private val orderService: OrderService,
+    private val customerService: CustomerService
 ) {
     @ModelAttribute("cart")
     fun getCart(session: HttpSession): Cart =
@@ -44,6 +46,11 @@ class OrderController(
         @RequestParam("payment") paymentType: PaymentType,
         session: HttpSession
     ): String {
+        if (!customerService.isExistsPhone(phone = customerPhone)) {
+            TODO("해당 처리 구현")
+            return "redirect:/customer/new"
+        }
+
         val cart = getCartFromSession(session)
         orderService.processOrder(customerPhone, paymentType, cart)
         cart.items.clear()
