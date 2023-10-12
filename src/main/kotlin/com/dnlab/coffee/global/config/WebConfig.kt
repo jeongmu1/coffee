@@ -11,6 +11,7 @@ class WebConfig: WebMvcConfigurer {
             addViewController("/").setViewName("index")
             addViewController("/user/admin/login").setViewName("admin/login")
             addViewController("/admin").setViewName("admin/index")
+            addViewController("/order/complete").setViewName("order/complete")
         }
     }
 }
