@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>장바구니 추가 결과</title>
+</head>
+<body>
+<h1>장바구니 추가 결과</h1>
+<table>
+  <thead>
+  <tr>
+    <th>메뉴명</th>
+    <th>수량</th>
+    <th>가격</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${cart}">
+    <td th:text="${item.menu}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td th:text="${item.totalPrice}"></td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td></td>
+    <td></td>
+    <td th:text="${totalPrice}"></td>
+  </tr>
+  </tfoot>
+</table>
+<a th:href="@{/order}">결제하기</a>
+<a th:href="@{/menu}">메뉴로 돌아가기</a>
+</body>
+</html>

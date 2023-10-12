@@ -6,6 +6,7 @@ import com.dnlab.coffee.order.domain.OrderMenu
 import com.dnlab.coffee.order.domain.PaymentType
 import com.dnlab.coffee.order.dto.Cart
 import com.dnlab.coffee.order.dto.CartItem
+import com.dnlab.coffee.order.dto.CartItemDisplay
 import com.dnlab.coffee.order.exception.OutOfStockException
 import com.dnlab.coffee.order.repository.CustomOrderRepository
 import com.dnlab.coffee.order.repository.OrderMenuRepository
@@ -32,6 +33,20 @@ class OrderService(
             )
         )
         cart.items.forEach { orderMenuRepository.save(it.toEntity(order)) }
+    }
+
+    fun convertCartToDtoList(cart: Cart): List<CartItemDisplay> =
+        cart.items.map { it.toCartItemDisplay() }
+
+    private fun CartItem.toCartItemDisplay(): CartItemDisplay {
+        val menu = menuRepository.findMenuById(this.itemId)
+            ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다, id : ${this.itemId}")
+
+        return CartItemDisplay(
+            menu = menu.name,
+            price = menu.price,
+            quantity = this.quantity
+        )
     }
 
     private fun CartItem.toEntity(order: CustomerOrder): OrderMenu {

@@ -1,9 +1,10 @@
 package com.dnlab.coffee.order.controller
 
 import com.dnlab.coffee.global.util.LoggerDelegate
-import com.dnlab.coffee.order.domain.PaymentType
 import com.dnlab.coffee.order.dto.Cart
 import com.dnlab.coffee.order.dto.CartItem
+import com.dnlab.coffee.order.dto.CartItemDisplay
+import com.dnlab.coffee.order.dto.OrderForm
 import com.dnlab.coffee.order.service.OrderService
 import com.dnlab.coffee.user.service.CustomerService
 import jakarta.servlet.http.HttpSession
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 @RequestMapping("/order")
@@ -24,12 +24,14 @@ class OrderController(
     private val logger by LoggerDelegate()
 
     @ModelAttribute("cart")
-    fun getCart(session: HttpSession): Cart =
-        getCartFromSession(session)
+    fun getCart(session: HttpSession): List<CartItemDisplay> =
+        orderService.convertCartToDtoList(getCartFromSession(session))
 
-    @GetMapping("/cart")
-    fun showCart(session: HttpSession, model: ModelMap) {
-        TODO("return view")
+    @GetMapping("/cart/added")
+    fun showAddedCartResult(model: ModelMap, session: HttpSession): String {
+        model["totalPrice"] = orderService.convertCartToDtoList(getCartFromSession(session))
+            .sumOf { it.totalPrice }
+        return "cart/added"
     }
 
     @PostMapping("/cart")
@@ -43,22 +45,25 @@ class OrderController(
         } ?: cart.items.add(cartItem)
         logger.info("Cart Currently : ${cart.items}")
 
-        return "redirect:/menu"
+        return "redirect:/order/cart/added"
+    }
+
+    @GetMapping
+    fun showOrderForm(): String {
+        return "order/payment"
     }
 
     @PostMapping
     fun processOrder(
-        @RequestParam("phone") customerPhone: String,
-        @RequestParam("payment") paymentType: PaymentType,
+        orderForm: OrderForm,
         session: HttpSession
     ): String {
-        if (!customerService.isExistsPhone(phone = customerPhone)) {
-            TODO("해당 처리 구현")
+        if (!customerService.isExistsPhone(phone = orderForm.customerPhone)) {
             return "redirect:/customer/new"
         }
 
         val cart = getCartFromSession(session)
-        orderService.processOrder(customerPhone, paymentType, cart)
+        orderService.processOrder(orderForm.customerPhone, orderForm.paymentType, cart)
         cart.items.clear()
 
         return "redirect:/order/complete"
