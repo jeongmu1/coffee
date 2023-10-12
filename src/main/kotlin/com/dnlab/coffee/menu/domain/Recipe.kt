@@ -13,5 +13,5 @@ class Recipe(
     @ManyToOne(fetch = FetchType.LAZY)
     val ingredient: Ingredient,
     @Column(nullable = false)
-    val quantity: Double
+    val amount: Double
 ): BaseEntity()

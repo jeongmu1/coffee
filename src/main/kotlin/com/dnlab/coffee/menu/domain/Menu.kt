@@ -18,5 +18,5 @@ class Menu(
     val recipes: List<Recipe>
         get() = _recipes
 
-    fun isSoldOuted(): Boolean = this.recipes.any { (it.ingredient.stock - it.quantity) < 0 }
+    fun isSoldOuted(): Boolean = this.recipes.any { (it.ingredient.stock - it.amount) < 0 }
 }

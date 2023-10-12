@@ -34,7 +34,7 @@ class OrderService(
         )
         cart.items.forEach { cartItem ->
             val orderMenu = orderMenuRepository.save(cartItem.toEntity(order))
-            orderMenu.menu.recipes.forEach { it.ingredient.stock -= orderMenu.quantity * it.quantity }
+            orderMenu.menu.recipes.forEach { it.ingredient.stock -= orderMenu.quantity * it.amount }
         }
     }
 
