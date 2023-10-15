@@ -12,6 +12,7 @@
     <th>재료명</th>
     <th>측정단위</th>
     <th>재고량</th>
+    <th>재고량 수정</th>
   </tr>
   </thead>
   <tbody>
@@ -19,6 +20,15 @@
     <td th:text="${ingredient.name}"></td>
     <td th:text="${ingredient.measurementUnit.unit}"></td>
     <td th:text="${ingredient.stock}"></td>
+    <td>
+      <form th:action="@{/ingredient/amount}" th:method="patch">
+        <input type="hidden" id="ingredientId" name="ingredientId" th:value="${ingredient.id}">
+        <label for="amount">
+          <input type="number" id="amount" name="amount">
+        </label>
+        <input type="submit" value="수정">
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>
