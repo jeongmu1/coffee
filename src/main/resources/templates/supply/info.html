@@ -26,7 +26,7 @@
     <td th:text="${supply.updatedAt}"></td>
     <td>
       <form th:if="${supply.actualDeliveryDate == null}" th:action="@{/supply/delivery-date}" method="post">
-        <input type="hidden" id="id" name="id" th:value="*{supply.supplyId}">
+        <input type="hidden" id="supplyId" name="supplyId" th:value="*{supply.supplyId}">
         <label for="actualDeliveryDate">
           <input type="date" name="actualDeliveryDate" id="actualDeliveryDate">
         </label>

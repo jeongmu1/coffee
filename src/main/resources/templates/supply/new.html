@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
-  <meta charset="UTF-8">
-  <title>새 공급</title>
+  <title>Supply Form</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<form th:action="@{/supply/new}" method="post">
-  <label for="ingredientName">재료명:
-    <input type="text" id="ingredientName" name="ingredientName">
-  </label><br>
-  <label for="vendorId">공급업체코드:
-    <input type="text" id="vendorId" name="vendorId">
-  </label><br>
-  <label for="deliveryDate">납기일:
-    <input type="date" id="deliveryDate" name="deliveryDate">
-  </label><br>
-  <label for="actualDeliveryDate">실납기일:
-    <input type="date" id="actualDeliveryDate" name="actualDeliveryDate">
-  </label><br>
-  <label for="price">가격:
-    <input type="number" id="price" name="price">
-  </label><br>
-  <label for="quantity">양:
-    <input type="text" id="quantity" name="quantity">
-  </label><br>
-  <input type="submit">
+<form th:action="@{/supply/new}" method="post" id="supplyForm">
+  <!-- Supply Fields -->
+  <label for="deliveryDate">납기:</label>
+  <input type="date" id="deliveryDate" name="deliveryDate" required><br>
+
+  <label for="actualDeliveryDate">실납기:</label>
+  <input type="date" id="actualDeliveryDate" name="actualDeliveryDate"><br>
+
+  <label for="vendor">공급업체:</label>
+  <select id="vendor" name="vendorId" required>
+    <option th:each="vendor : ${vendors}" th:value="${vendor.id}" th:text="${vendor.name}"></option>
+  </select><br>
+
+  <hr>
+
+  <!-- SupplyItem Fields -->
+  <div id="items">
+    <div class="item">
+      <label for="ingredient">재료:</label>
+      <select id="ingredient" name="supplyItems[0].ingredientId" required>
+        <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"></option>
+      </select><br>
+
+      <label for="amount">양:</label>
+      <input type="number" id="amount" name="supplyItems[0].amount" required><br>
+
+      <label for="price">가격:</label>
+      <input type="number" id="price" name="supplyItems[0].price" required><br>
+    </div>
+  </div>
+
+  <button type="button" id="addItem">Add Item</button>
+  <button type="submit">Submit</button>
 </form>
+
+<!-- JavaScript to dynamically add form elements -->
+<script th:src="@{/js/form.js}"></script>
 </body>
 </html>

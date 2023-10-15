@@ -1,0 +1,18 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+}
+
+button {
+  margin-top: 20px;
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
