@@ -3,10 +3,7 @@ package com.dnlab.coffee.vendor.service
 import com.dnlab.coffee.menu.repository.IngredientRepository
 import com.dnlab.coffee.vendor.domain.Supply
 import com.dnlab.coffee.vendor.domain.SupplyItem
-import com.dnlab.coffee.vendor.dto.ActualDeliveryDateForm
-import com.dnlab.coffee.vendor.dto.SupplyForm
-import com.dnlab.coffee.vendor.dto.SupplyInfo
-import com.dnlab.coffee.vendor.dto.SupplyItemForm
+import com.dnlab.coffee.vendor.dto.*
 import com.dnlab.coffee.vendor.repository.SupplyItemRepository
 import com.dnlab.coffee.vendor.repository.SupplyRepository
 import com.dnlab.coffee.vendor.repository.VendorRepository
@@ -24,6 +21,12 @@ class SupplyService(
     fun getSupplyInfoList(): List<SupplyInfo> =
         supplyRepository.findAll()
             .map { it.toSupplyInfo() }
+
+    @Transactional(readOnly = true)
+    fun getSupplyDetail(supplyId: Long): SupplyInfoDetail =
+        supplyRepository.findSupplyById(supplyId)
+            ?.run { toSupplyInfoDetail() }
+            ?: throw NoSuchElementException("해당 공급 기록을 찾을 수 없습니다.")
 
     @Transactional
     fun inputActualDeliveryDate(form: ActualDeliveryDateForm) {
@@ -48,8 +51,8 @@ class SupplyService(
         supplyItemRepository.saveAll(form.supplyItems.map { it.toEntity(supply) })
     }
 
-    private fun Supply.toSupplyInfo(): SupplyInfo {
-        return SupplyInfo(
+    private fun Supply.toSupplyInfo(): SupplyInfo =
+        SupplyInfo(
             supplyId = this.id,
             vendor = this.vendor.name,
             deliveryDate = this.deliveryDate,
@@ -57,7 +60,24 @@ class SupplyService(
             createdAt = this.createdAt.toLocalDate(),
             updatedAt = this.updatedAt.toLocalDate()
         )
-    }
+
+    private fun Supply.toSupplyInfoDetail(): SupplyInfoDetail =
+        SupplyInfoDetail(
+            vendor = this.vendor.name,
+            deliveryDate = this.deliveryDate,
+            actualDeliveryDate = this.actualDeliveryDate,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            items = this.supplyItems.map { it.toSupplyItemInfo() }
+        )
+
+    private fun SupplyItem.toSupplyItemInfo(): SupplyItemInfo =
+        SupplyItemInfo(
+            ingredient = this.ingredient.name,
+            measurementUnit = this.ingredient.measurementUnit.unit,
+            amount = this.amount,
+            price = this.price
+        )
 
     private fun SupplyItemForm.toEntity(supply: Supply): SupplyItem {
         val ingredient = ingredientRepository.findIngredientById(this.ingredientId)

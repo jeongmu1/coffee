@@ -5,6 +5,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import java.time.LocalDate
 
 @Entity
@@ -14,4 +15,9 @@ class Supply(
     var actualDeliveryDate: LocalDate?,
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     val vendor: Vendor,
-): BaseTimeEntity()
+): BaseTimeEntity() {
+    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY)
+    private val _supplyItems: MutableList<SupplyItem> = mutableListOf()
+    val supplyItems: List<SupplyItem>
+        get() = _supplyItems
+}

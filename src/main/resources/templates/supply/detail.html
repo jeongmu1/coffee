@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <title>공급 정보</title>
+</head>
+<body>
+
+<h1>공급 정보</h1>
+
+<table border="1">
+  <tr>
+    <td>공급업체:</td>
+    <td th:text="${supply.vendor}"></td>
+  </tr>
+  <tr>
+    <td>납기:</td>
+    <td th:text="${supply.deliveryDate}"></td>
+  </tr>
+  <tr>
+    <td>실납기:</td>
+    <td th:text="${supply.actualDeliveryDate}"></td>
+  </tr>
+  <tr>
+    <td>입력시간:</td>
+    <td th:text="${supply.createdAt}"></td>
+  </tr>
+  <tr>
+    <td>최종수정시간:</td>
+    <td th:text="${supply.updatedAt}"></td>
+  </tr>
+</table>
+
+<h2>공급 항목</h2>
+
+<table border="1">
+  <tr>
+    <th>재료</th>
+    <th>측정단위</th>
+    <th>양</th>
+    <th>가격</th>
+  </tr>
+  <tr th:each="item : ${supply.items}">
+    <td th:text="${item.ingredient}"></td>
+    <td th:text="${item.measurementUnit}"></td>
+    <td th:text="${item.amount}"></td>
+    <td th:text="${item.price}"></td>
+  </tr>
+</table>
+<a th:href="@{/supply}">이전으로</a>
+
+</body>
+</html>

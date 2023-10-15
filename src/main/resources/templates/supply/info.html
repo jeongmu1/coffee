@@ -19,13 +19,17 @@
   </thead>
   <tbody>
   <tr th:each="supply : ${supplies}">
-    <td th:text="${supply.vendor}"></td>
+    <td>
+      <a th:href="@{supply/{supplyId}(supplyId = ${supply.supplyId})}"
+         th:text="${supply.vendor}"></a>
+    </td>
     <td th:text="${supply.deliveryDate}"></td>
     <td th:text="${supply.actualDeliveryDate}"></td>
     <td th:text="${supply.createdAt}"></td>
     <td th:text="${supply.updatedAt}"></td>
     <td>
-      <form th:if="${supply.actualDeliveryDate == null}" th:action="@{/supply/delivery-date}" method="post">
+      <form th:if="${supply.actualDeliveryDate == null}" th:action="@{/supply/delivery-date}"
+            method="post">
         <input type="hidden" id="supplyId" name="supplyId" th:value="*{supply.supplyId}">
         <label for="actualDeliveryDate">
           <input type="date" name="actualDeliveryDate" id="actualDeliveryDate">
@@ -37,5 +41,6 @@
   </tbody>
 </table>
 <a th:href="@{/supply/new}">새 공급</a>
+<a th:href="@{/admin}">메인으로</a>
 </body>
 </html>

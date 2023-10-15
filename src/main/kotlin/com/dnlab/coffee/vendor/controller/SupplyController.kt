@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -31,6 +32,15 @@ class SupplyController(
     fun showSupplyHistory(model: ModelMap): String {
         model["supplies"] = supplyService.getSupplyInfoList()
         return "supply/info"
+    }
+
+    @GetMapping("/{supplyId}")
+    fun showSupplyDetail(
+        @PathVariable("supplyId") supplyId: Long,
+        model: ModelMap
+    ): String {
+        model["supply"] = supplyService.getSupplyDetail(supplyId)
+        return "supply/detail"
     }
 
     @PostMapping("delivery-date")
