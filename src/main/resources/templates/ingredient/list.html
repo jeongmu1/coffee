@@ -7,9 +7,13 @@
 </head>
 <body>
 <table>
-  <th>재료명</th>
-  <th>측정단위</th>
-  <th>재고량</th>
+  <thead>
+  <tr>
+    <th>재료명</th>
+    <th>측정단위</th>
+    <th>재고량</th>
+  </tr>
+  </thead>
   <tbody>
   <tr th:each="ingredient : ${ingredients}">
     <td th:text="${ingredient.name}"></td>
@@ -17,11 +21,13 @@
     <td th:text="${ingredient.stock}"></td>
   </tr>
   </tbody>
-</table><br/>
+</table>
+<br/>
 
 <form th:action="@{/ingredient/new}" method="get">
   <input type="submit" value="새 재료">
-</form><br>
+</form>
+<br>
 <a th:href="@{/admin}">메인</a>
 </body>
 </html>

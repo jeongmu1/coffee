@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>공급기록</title>
+</head>
+<body>
+<h1>공급기록</h1>
+<table>
+  <thead>
+  <tr>
+    <th>공급처</th>
+    <th>납기</th>
+    <th>실납기</th>
+    <th>입력일자</th>
+    <th>수정일자</th>
+    <th>실납기입력</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="supply : ${supplies}">
+    <td th:text="${supply.vendor}"></td>
+    <td th:text="${supply.deliveryDate}"></td>
+    <td th:text="${supply.actualDeliveryDate}"></td>
+    <td th:text="${supply.createdAt}"></td>
+    <td th:text="${supply.updatedAt}"></td>
+    <td>
+      <form th:if="${supply.actualDeliveryDate == null}" th:action="@{/supply/delivery-date}" method="post">
+        <input type="hidden" id="id" name="id" th:value="*{supply.supplyId}">
+        <label for="actualDeliveryDate">
+          <input type="date" name="actualDeliveryDate" id="actualDeliveryDate">
+        </label>
+        <input type="submit" value="입력">
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/supply/new}">새 공급</a>
+</body>
+</html>
