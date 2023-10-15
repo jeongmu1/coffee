@@ -24,7 +24,7 @@
       <form th:action="@{/ingredient/amount}" th:method="patch">
         <input type="hidden" id="ingredientId" name="ingredientId" th:value="${ingredient.id}">
         <label for="amount">
-          <input type="number" id="amount" name="amount">
+          <input type="number" id="amount" name="amount" th:value="${ingredient.stock}">
         </label>
         <input type="submit" value="수정">
       </form>
