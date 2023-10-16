@@ -5,5 +5,6 @@ data class MenuDisplay(
     val name: String,
     val price: Int,
     val productType: String,
-    val soldOuted: Boolean
+    val soldOuted: Boolean,
+    val recipes: List<RecipeInfo> = mutableListOf()
 )

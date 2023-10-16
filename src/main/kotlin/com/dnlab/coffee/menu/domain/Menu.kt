@@ -1,6 +1,7 @@
 package com.dnlab.coffee.menu.domain
 
 import com.dnlab.coffee.global.domain.BaseTimeEntity
+import com.dnlab.coffee.menu.dto.MenuDisplay
 import jakarta.persistence.*
 
 @Entity
@@ -19,4 +20,14 @@ class Menu(
         get() = _recipes
 
     fun isSoldOuted(): Boolean = this.recipes.any { (it.ingredient.stock - it.amount) < 0 }
+
+    fun toDisplay(): MenuDisplay =
+        MenuDisplay(
+            id = this.id,
+            name = this.name,
+            price = this.price,
+            productType = this.productType.title,
+            soldOuted = this.isSoldOuted(),
+            recipes = this.recipes.map { it.toRecipeInfo() }
+        )
 }

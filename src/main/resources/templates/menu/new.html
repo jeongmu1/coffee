@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>메뉴 추가</title>
+</head>
+<body>
+<h1>메뉴 추가</h1>
+<form th:action="@{/menu/new}" method="post" id="menuForm">
+  <!-- 메뉴 -->
+  <label for="name">메뉴명:</label>
+  <input type="text" id="name" name="name" required><br>
+
+  <label for="price">가격:</label>
+  <input type="number" id="price" name="price" required><br>
+
+  <p>측정단위:</p>
+  <p th:each="productType : ${productTypes}">
+    <label for="productType"></label>
+    <input type="radio" name="productType" id="productType" th:value="${productType}" required/>
+    <span th:text="${productType.title}"></span>
+  </p>
+  <br>
+
+  <hr>
+
+  <!-- 재료 -->
+  <div id="items">
+    <div class="item">
+      <label for="ingredientId">재료:</label>
+      <select id="ingredientId" name="recipes[0].ingredientId" required>
+        <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}"
+                th:text="${ingredient.name}"></option>
+      </select><br>
+
+      <label for="amount">양:</label>
+      <input type="number" id="amount" name="recipes[0].amount" required><br>
+
+    </div>
+  </div>
+
+  <button type="button" id="addItem">Add Item</button>
+  <button type="submit">Submit</button>
+
+</form>
+<script th:src="@{/js/form.js}"></script>
+</body>
+</html>
