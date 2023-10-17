@@ -33,9 +33,7 @@ class MenuService(
     }
 
     @Transactional(readOnly = true)
-    fun getMenu(id: Long): MenuDisplay =
-        menuRepository.findMenuById(id)?.toDisplay()
-            ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다 : $id")
+    fun getMenu(id: Long): MenuDisplay = findMenuById(id).toDisplay()
 
     @Transactional
     fun createMenu(menuForm: MenuForm) {
@@ -43,16 +41,15 @@ class MenuService(
             Menu(
                 name = menuForm.name,
                 productType = menuForm.productType,
-                price = menuForm.price
+                price = menuForm.price,
+                specialMenu = menuForm.specialMenu
             )
         )
         recipeRepository.saveAll(menuForm.recipes.map { it.toEntity(menu) })
     }
 
     fun getRecipesOfMenu(menuId: Long): List<RecipeInfo> {
-        val menu = menuRepository.findMenuById(menuId)
-            ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다 : $menuId")
-
+        val menu = findMenuById(menuId)
         return recipeRepository.findRecipesByMenu(menu).map { it.toRecipeInfo() }
     }
 
@@ -71,10 +68,19 @@ class MenuService(
 
     @Transactional
     fun addRecipes(menuId: Long, recipeForm: NewRecipeForm) {
-        val menu = menuRepository.findMenuById(menuId)
-            ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다 : $menuId")
+        val menu = findMenuById(menuId)
         recipeRepository.saveAll(recipeForm.recipes.map { it.toEntity(menu) })
     }
+
+    @Transactional
+    fun updateSpecialMenu(menuId: Long, specialMenu: Boolean) {
+        val menu = findMenuById(menuId)
+        menu.specialMenu = specialMenu
+    }
+
+
+    private fun findMenuById(menuId: Long): Menu = menuRepository.findMenuById(menuId)
+        ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다 : $menuId")
 
     private fun RecipeForm.toEntity(menu: Menu): Recipe {
         val ingredient = ingredientRepository.findIngredientById(this.ingredientId)

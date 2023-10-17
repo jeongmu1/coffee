@@ -93,4 +93,14 @@ class MenuController(
         menuService.deleteRecipe(recipeId)
         return "redirect:/menu/$menuId"
     }
+
+    @PatchMapping("/{menuId}/special-menu")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun updateSpecialMenu(
+        @PathVariable("menuId") menuId: Long,
+        specialMenu: Boolean
+    ): String {
+        menuService.updateSpecialMenu(menuId, specialMenu)
+        return "redirect:/menu/$menuId"
+    }
 }

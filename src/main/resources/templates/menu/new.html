@@ -19,9 +19,11 @@
     <label for="productType"></label>
     <input type="radio" name="productType" id="productType" th:value="${productType}" required/>
     <span th:text="${productType.title}"></span>
-  </p>
-  <br>
+  </p><br>
 
+  <label for="specialMenu">스페셜메뉴여부:
+    <input type="checkbox" id="specialMenu" name="specialMenu">
+  </label>
   <hr>
 
   <!-- 재료 -->

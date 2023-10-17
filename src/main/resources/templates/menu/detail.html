@@ -27,6 +27,8 @@
 <span>제품명 : <span th:text="${menu.name}"></span></span><br>
 <span>가격 : <span th:text="${menu.price}"></span></span><br>
 <span>분류 : <span th:text="${menu.productType}"></span></span><br>
+<span>스페셜메뉴 여부 : <span th:if="${menu.specialMenu}">O</span>
+  <span th:if="${!menu.specialMenu}">X</span></span>
 
 <form id="orderForm" method="post" th:action="@{/order/cart}">
   <input type="hidden" id="itemId" name="itemId" th:value="*{menu.id}">
@@ -37,6 +39,14 @@
 </form>
 <hr>
 <div sec:authorize="isAuthenticated()">
+  <h1>특별메뉴</h1>
+  <form th:action="@{/menu/{menuId}/special-menu(menuId=${menu.id})}" th:method="patch">
+      <label for="specialMenu">스페셜메뉴여부:
+        <input type="checkbox" id="specialMenu" name="specialMenu" th:checked="${menu.specialMenu}">
+        <input type="submit" >
+      </label>
+  </form>
+
   <h1>레시피</h1>
   <table>
     <thead>
@@ -64,7 +74,9 @@
         </form>
       </td>
       <td>
-        <form th:action="@{/menu/{menuId}/recipe/{recipeId}(menuId=${menu.id}, recipeId=${recipe.id})}" th:method="delete">
+        <form
+            th:action="@{/menu/{menuId}/recipe/{recipeId}(menuId=${menu.id}, recipeId=${recipe.id})}"
+            th:method="delete">
           <input type="submit" value="삭제">
         </form>
       </td>
@@ -81,7 +93,8 @@
           <label>
             재료:
             <select name="recipes[0].ingredientId">
-              <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"></option>
+              <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}"
+                      th:text="${ingredient.name}"></option>
             </select>
           </label>
           <label>
