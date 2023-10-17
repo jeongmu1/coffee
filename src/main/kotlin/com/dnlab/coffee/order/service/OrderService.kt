@@ -52,6 +52,7 @@ class OrderService(
             ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다, id : ${this.itemId}")
 
         return CartItemDisplay(
+            itemId = menu.id,
             menu = menu.name,
             price = menu.price,
             quantity = this.quantity

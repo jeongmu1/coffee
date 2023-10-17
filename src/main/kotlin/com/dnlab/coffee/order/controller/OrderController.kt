@@ -10,8 +10,11 @@ import com.dnlab.coffee.user.service.CustomerService
 import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -22,6 +25,7 @@ class OrderController(
     private val customerService: CustomerService
 ) {
     private val logger by LoggerDelegate()
+    private val cartInfoUrlRedirect = "redirect:/order/cart/added"
 
     @ModelAttribute("cart")
     fun getCart(session: HttpSession): List<CartItemDisplay> =
@@ -45,7 +49,33 @@ class OrderController(
         } ?: cart.items.add(cartItem)
         logger.info("Cart Currently : ${cart.items}")
 
-        return "redirect:/order/cart/added"
+        return cartInfoUrlRedirect
+    }
+
+    @DeleteMapping("/cart")
+    fun resetCart(session: HttpSession): String {
+        setNewCartToSession(session)
+        return "redirect:/menu"
+    }
+
+    @PatchMapping("/cart/{itemId}/quantity")
+    fun updateMenuQuantity(
+        @PathVariable itemId: Long,
+        quantity: Int,
+        session: HttpSession
+    ): String {
+        getMenuFromCart(itemId, session).quantity = quantity
+        return cartInfoUrlRedirect
+    }
+
+    @DeleteMapping("/cart/{itemId}")
+    fun deleteMenu(
+        @PathVariable itemId: Long,
+        session: HttpSession
+    ): String {
+        val cart = getCartFromSession(session)
+        cart.items.removeIf { it.itemId == itemId }
+        return if (cart.items.isEmpty()) "redirect:/menu" else cartInfoUrlRedirect
     }
 
     @GetMapping
@@ -78,4 +108,7 @@ class OrderController(
         session.setAttribute("cart", newCart)
         return newCart
     }
+
+    private fun getMenuFromCart(itemId: Long, session: HttpSession): CartItem =
+        getCartFromSession(session).items.find { it.itemId == itemId }!!
 }
