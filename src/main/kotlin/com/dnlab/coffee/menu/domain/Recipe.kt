@@ -14,10 +14,11 @@ class Recipe(
     @ManyToOne(fetch = FetchType.LAZY)
     val ingredient: Ingredient,
     @Column(nullable = false)
-    val amount: Double
+    var amount: Double
 ) : BaseEntity() {
     fun toRecipeInfo(): RecipeInfo =
         RecipeInfo(
+            id = this.id,
             ingredient = this.ingredient.name,
             amount = this.amount,
             measurementUnit = this.ingredient.measurementUnit.unit

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="kr">
 <head>
   <meta charset="UTF-8">
   <title>메뉴</title>
@@ -16,11 +18,13 @@
   </thead>
   <tbody>
   <tr th:each="menu : ${menus}">
-    <td><a th:href="@{/menu/detail(id=${menu.id})}" th:text="${menu.name}"></a></td>
+    <td><a th:href="@{/menu/{menuId}(menuId = ${menu.id})}" th:text="${menu.name}"></a></td>
     <td th:text="${menu.price}"></td>
     <td th:text="${menu.productType}"></td>
   </tr>
   </tbody>
 </table>
+<a sec:authorize="isAuthenticated()" th:href="@{/menu/new}">새 메뉴</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/admin}">관리메인으로</a>
 </body>
 </html>

@@ -1,8 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="kr">
 <head>
   <meta charset="UTF-8">
   <title>메뉴 상세</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <script>
   function submitForm(action) {
@@ -28,6 +35,68 @@
   </label>
   <input type="submit" value="구매하기" onclick="submitForm('/order/cart')">
 </form>
+<hr>
+<div sec:authorize="isAuthenticated()">
+  <h1>레시피</h1>
+  <table>
+    <thead>
+    <tr>
+      <td>재료명</td>
+      <td>양</td>
+      <td>측정단위</td>
+      <td>양 수정</td>
+      <td>삭제</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="recipe : ${recipes}">
+      <td th:text="${recipe.ingredient}"></td>
+      <td th:text="${recipe.amount}"></td>
+      <td th:text="${recipe.measurementUnit}"></td>
+      <td>
+        <form
+            th:action="@{/menu/{menuId}/recipe/{recipeId}/amount(menuId=${menu.id}, recipeId=${recipe.id})}"
+            th:method="patch">
+          <label for="amount">
+            <input type="number" id="amount" name="amount" th:value="${recipe.amount}">
+          </label>
+          <input type="submit" value="수정">
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/menu/{menuId}/recipe/{recipeId}(menuId=${menu.id}, recipeId=${recipe.id})}" th:method="delete">
+          <input type="submit" value="삭제">
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <button id="presentForm">레시피 추가</button>
+  <div id="newForm" class="hidden">
+    <h2>새 레시피</h2>
+    <form th:action="@{/menu/{menuId}/recipe(menuId=${menu.id})}" method="post">
+      <div id="items">
+        <div class="item">
+          <label>
+            재료:
+            <select name="recipes[0].ingredientId">
+              <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"></option>
+            </select>
+          </label>
+          <label>
+            양:
+            <input type="number" name="recipes[0].amount" required>
+          </label>
+        </div>
+      </div>
+      <button type="button" id="addItem">항목 추가</button>
+      <input type="submit" value="레시피 저장">
+    </form>
+  </div>
+
+</div>
 <a th:href="@{/menu}">메뉴로 돌아가기</a>
+<script th:src="@{/js/form.js}"></script>
 </body>
 </html>

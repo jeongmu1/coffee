@@ -15,3 +15,8 @@ document.getElementById('addItem').addEventListener('click', function() {
 
   itemsDiv.appendChild(newItem);
 });
+
+document.getElementById("presentForm").addEventListener("click", function () {
+  console.log("clicked")
+  document.getElementById("newForm").classList.remove("hidden");
+})
