@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>고객 주문 기록</title>
+</head>
+<body>
+<h1>고객 주문 기록</h1>
+<span>주문시간: <span th:text="${order.createdAt}"></span></span><br>
+<span>고객이름: <span th:text="${order.customer}"></span></span><br>
+<span>고객전화: <span th:text="${order.customerPhone}"></span></span><br>
+<span>지불방식: <span th:text="${order.paymentType}"></span></span><br>
+<span>주문메뉴:</span><br>
+<table>
+  <thead>
+  <tr>
+    <th>메뉴명</th>
+    <th>수량</th>
+    <th>가격</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="menu : ${order.menus}">
+    <td th:text="${menu.menu}"></td>
+    <td th:text="${menu.quantity}"></td>
+    <td th:text="${menu.price}"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td th:text="${order.totalPrice}"></td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/order/admin}">뒤로가기</a>
+</body>
+</html>

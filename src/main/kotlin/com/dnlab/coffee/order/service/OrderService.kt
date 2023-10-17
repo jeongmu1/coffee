@@ -4,9 +4,7 @@ import com.dnlab.coffee.menu.repository.MenuRepository
 import com.dnlab.coffee.order.domain.CustomerOrder
 import com.dnlab.coffee.order.domain.OrderMenu
 import com.dnlab.coffee.order.domain.PaymentType
-import com.dnlab.coffee.order.dto.Cart
-import com.dnlab.coffee.order.dto.CartItem
-import com.dnlab.coffee.order.dto.CartItemDisplay
+import com.dnlab.coffee.order.dto.*
 import com.dnlab.coffee.order.exception.OutOfStockException
 import com.dnlab.coffee.order.repository.CustomOrderRepository
 import com.dnlab.coffee.order.repository.OrderMenuRepository
@@ -21,7 +19,6 @@ class OrderService(
     private val orderMenuRepository: OrderMenuRepository,
     private val menuRepository: MenuRepository
 ) {
-
     @Transactional
     fun processOrder(customerPhone: String, paymentType: PaymentType, cart: Cart) {
         val customer = customerRepository.findCustomerByPhone(customerPhone)
@@ -37,6 +34,15 @@ class OrderService(
             orderMenu.menu.recipes.forEach { it.ingredient.stock -= orderMenu.quantity * it.amount }
         }
     }
+
+    @Transactional(readOnly = true)
+    fun getOrderHistories(): List<OrderInfo> =
+        customOrderRepository.findAll().map { it.toOrderInfo() }
+
+    @Transactional(readOnly = true)
+    fun getOrderHistory(orderId: Long): OrderInfo =
+        customOrderRepository.findCustomerOrderById(orderId)?.toOrderInfo()
+            ?: throw NoSuchElementException("해당 주문을 찾을 수 없습니다 : $orderId")
 
     fun convertCartToDtoList(cart: Cart): List<CartItemDisplay> =
         cart.items.map { it.toCartItemDisplay() }
@@ -63,7 +69,25 @@ class OrderService(
         return OrderMenu(
             customerOrder = order,
             menu = menu,
-            quantity = this.quantity
+            quantity = this.quantity,
+            price = this.quantity * menu.price
         )
     }
+
+    private fun CustomerOrder.toOrderInfo(): OrderInfo =
+        OrderInfo(
+            id = this.id,
+            customer = this.customer.name,
+            customerPhone = this.customer.phone,
+            paymentType = this.paymentType.value,
+            createdAt = this.createdAt,
+            menus = this.orderMenus.map { it.toOrderMenuInfo() }
+        )
+
+    private fun OrderMenu.toOrderMenuInfo(): OrderMenuInfo =
+        OrderMenuInfo(
+            menu = this.menu.name,
+            quantity = this.quantity,
+            price = this.price
+        )
 }

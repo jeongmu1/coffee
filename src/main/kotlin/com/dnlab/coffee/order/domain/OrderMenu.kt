@@ -14,5 +14,7 @@ class OrderMenu(
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     val menu: Menu,
     @Column(nullable = false)
-    val quantity: Int
+    val quantity: Int,
+    @Column(nullable = false)
+    val price: Int
 ): BaseEntity()
