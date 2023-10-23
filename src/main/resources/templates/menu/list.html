@@ -3,28 +3,35 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="kr">
 <head>
-  <meta charset="UTF-8">
-  <title>메뉴</title>
+    <meta charset="UTF-8">
+    <title>메뉴</title>
 </head>
 <body>
 <h1>메뉴</h1>
+<form th:method="get" th:action="@{/menu}">
+    <label>
+        <input type="text" th:name="menu">
+    </label>
+    <input type="submit" value="검색">
+</form>
+
 <table>
-  <thead>
-  <tr>
-    <th>메뉴명</th>
-    <th>가격</th>
-    <th>분류</th>
-    <th>스페셜메뉴여부</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="menu : ${menus}">
-    <td><a th:href="@{/menu/{menuId}(menuId = ${menu.id})}" th:text="${menu.name}"></a></td>
-    <td th:text="${menu.price}"></td>
-    <td th:text="${menu.productType}"></td>
-    <td><span th:if="${menu.specialMenu}">O</span></td>
-  </tr>
-  </tbody>
+    <thead>
+    <tr>
+        <th>메뉴명</th>
+        <th>가격</th>
+        <th>분류</th>
+        <th>스페셜메뉴여부</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="menu : ${menus}">
+        <td><a th:href="@{/menu/{menuId}(menuId = ${menu.id})}" th:text="${menu.name}"></a></td>
+        <td th:text="${menu.price}"></td>
+        <td th:text="${menu.productType}"></td>
+        <td><span th:if="${menu.specialMenu}">O</span></td>
+    </tr>
+    </tbody>
 </table>
 <a sec:authorize="isAuthenticated()" th:href="@{/menu/new}">새 메뉴</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/admin}">관리메인으로</a>
