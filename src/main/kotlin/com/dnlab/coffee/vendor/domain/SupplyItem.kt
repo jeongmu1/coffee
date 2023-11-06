@@ -2,6 +2,7 @@ package com.dnlab.coffee.vendor.domain
 
 import com.dnlab.coffee.global.domain.BaseTimeEntity
 import com.dnlab.coffee.menu.domain.Ingredient
+import com.dnlab.coffee.vendor.dto.SupplyItemInfo
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -17,4 +18,12 @@ class SupplyItem(
     val amount: Double,
     @Column(nullable = false)
     val price: Int
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun toSupplyItemInfo(): SupplyItemInfo =
+        SupplyItemInfo(
+            ingredient = this.ingredient.name,
+            measurementUnit = this.ingredient.measurementUnit.unit,
+            amount = this.amount,
+            price = this.price
+        )
+}

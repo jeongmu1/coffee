@@ -51,34 +51,6 @@ class SupplyService(
         supplyItemRepository.saveAll(form.supplyItems.map { it.toEntity(supply) })
     }
 
-    private fun Supply.toSupplyInfo(): SupplyInfo =
-        SupplyInfo(
-            supplyId = this.id,
-            vendor = this.vendor.name,
-            deliveryDate = this.deliveryDate,
-            actualDeliveryDate = this.actualDeliveryDate,
-            createdAt = this.createdAt.toLocalDate(),
-            updatedAt = this.updatedAt.toLocalDate()
-        )
-
-    private fun Supply.toSupplyInfoDetail(): SupplyInfoDetail =
-        SupplyInfoDetail(
-            vendor = this.vendor.name,
-            deliveryDate = this.deliveryDate,
-            actualDeliveryDate = this.actualDeliveryDate,
-            createdAt = this.createdAt,
-            updatedAt = this.updatedAt,
-            items = this.supplyItems.map { it.toSupplyItemInfo() }
-        )
-
-    private fun SupplyItem.toSupplyItemInfo(): SupplyItemInfo =
-        SupplyItemInfo(
-            ingredient = this.ingredient.name,
-            measurementUnit = this.ingredient.measurementUnit.unit,
-            amount = this.amount,
-            price = this.price
-        )
-
     private fun SupplyItemForm.toEntity(supply: Supply): SupplyItem {
         val ingredient = ingredientRepository.findIngredientById(this.ingredientId)
             ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다.")

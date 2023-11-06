@@ -2,6 +2,7 @@ package com.dnlab.coffee.order.domain
 
 import com.dnlab.coffee.global.domain.BaseEntity
 import com.dnlab.coffee.menu.domain.Menu
+import com.dnlab.coffee.order.dto.OrderMenuInfo
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -17,4 +18,11 @@ class OrderMenu(
     val quantity: Int,
     @Column(nullable = false)
     val price: Int
-): BaseEntity()
+) : BaseEntity() {
+    fun toOrderMenuInfo(): OrderMenuInfo =
+        OrderMenuInfo(
+            menu = this.menu.name,
+            quantity = this.quantity,
+            price = this.price
+        )
+}

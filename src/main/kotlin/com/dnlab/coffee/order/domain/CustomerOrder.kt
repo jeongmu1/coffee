@@ -1,6 +1,7 @@
 package com.dnlab.coffee.order.domain
 
 import com.dnlab.coffee.global.domain.BaseEntity
+import com.dnlab.coffee.order.dto.OrderInfo
 import com.dnlab.coffee.user.domain.Customer
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
@@ -25,4 +26,14 @@ class CustomerOrder(
     @Column(nullable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
         private set
+
+    fun toOrderInfo(): OrderInfo =
+        OrderInfo(
+            id = this.id,
+            customer = this.customer.name,
+            customerPhone = this.customer.phone,
+            paymentType = this.paymentType.value,
+            createdAt = this.createdAt,
+            menus = this.orderMenus.map { it.toOrderMenuInfo() }
+        )
 }

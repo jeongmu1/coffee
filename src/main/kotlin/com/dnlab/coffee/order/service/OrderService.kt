@@ -74,21 +74,4 @@ class OrderService(
             price = this.quantity * menu.price
         )
     }
-
-    private fun CustomerOrder.toOrderInfo(): OrderInfo =
-        OrderInfo(
-            id = this.id,
-            customer = this.customer.name,
-            customerPhone = this.customer.phone,
-            paymentType = this.paymentType.value,
-            createdAt = this.createdAt,
-            menus = this.orderMenus.map { it.toOrderMenuInfo() }
-        )
-
-    private fun OrderMenu.toOrderMenuInfo(): OrderMenuInfo =
-        OrderMenuInfo(
-            menu = this.menu.name,
-            quantity = this.quantity,
-            price = this.price
-        )
 }
