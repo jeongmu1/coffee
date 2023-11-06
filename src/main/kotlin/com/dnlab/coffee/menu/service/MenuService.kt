@@ -1,6 +1,5 @@
 package com.dnlab.coffee.menu.service
 
-import com.dnlab.coffee.global.util.LoggerDelegate
 import com.dnlab.coffee.menu.domain.Menu
 import com.dnlab.coffee.menu.domain.Recipe
 import com.dnlab.coffee.menu.dto.*
@@ -16,21 +15,12 @@ class MenuService(
     private val ingredientRepository: IngredientRepository,
     private val recipeRepository: RecipeRepository
 ) {
-    private val logger by LoggerDelegate()
 
     @Transactional(readOnly = true)
-    fun getMenus(): List<MenuDisplay> {
-        val menus = menuRepository.findAll().map { it.toDisplay() }
-        logger.info("menus : $menus")
-        return menus
-    }
+    fun getMenus(): List<MenuDisplay> = menuRepository.findAll().map { it.toDisplay() }
 
     @Transactional(readOnly = true)
-    fun getMenus(name: String): List<MenuDisplay> {
-        val menus = menuRepository.findMenusByNameContains(name).map { it.toDisplay() }
-        logger.info("menus : $menus")
-        return menus
-    }
+    fun getMenus(name: String): List<MenuDisplay> = menuRepository.findMenusByNameContains(name).map { it.toDisplay() }
 
     @Transactional(readOnly = true)
     fun getMenu(id: Long): MenuDisplay = findMenuById(id).toDisplay()

@@ -23,6 +23,6 @@ class IngredientService(
     fun updateAmount(amountForm: AmountForm) {
         ingredientRepository.findIngredientById(amountForm.ingredientId)
             ?.let { it.stock = amountForm.amount }
-            ?: NoSuchElementException("해당 재료를 찾을 수 없습니다.")
+            ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다.")
     }
 }
