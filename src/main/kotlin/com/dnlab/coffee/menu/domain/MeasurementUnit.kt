@@ -1,7 +1,7 @@
 package com.dnlab.coffee.menu.domain
 
 enum class MeasurementUnit(
-    val unit: String
+    val initial: String
 ) {
     GRAM("g"),
     MILLILITER("mL"),

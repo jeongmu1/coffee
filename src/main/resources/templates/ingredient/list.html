@@ -18,7 +18,7 @@
   <tbody>
   <tr th:each="ingredient : ${ingredients}">
     <td th:text="${ingredient.name}"></td>
-    <td th:text="${ingredient.measurementUnit.unit}"></td>
+    <td th:text="${ingredient.measurementUnit.initial}"></td>
     <td th:text="${ingredient.stock}"></td>
     <td>
       <form th:action="@{/ingredient/amount}" th:method="patch">

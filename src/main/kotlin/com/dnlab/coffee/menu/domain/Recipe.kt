@@ -21,6 +21,6 @@ class Recipe(
             id = this.id,
             ingredient = this.ingredient.name,
             amount = this.amount,
-            measurementUnit = this.ingredient.measurementUnit.unit
+            measurementUnit = this.ingredient.measurementUnit.initial
         )
 }

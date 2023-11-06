@@ -15,7 +15,7 @@
   <p th:each="unit : ${measurementUnits}">
     <label for="measurementUnit"></label>
     <input type="radio" name="measurementUnit" id="measurementUnit" th:value="${unit}" required/>
-    <span th:text="${unit.unit}"></span>
+    <span th:text="${unit.initial}"></span>
   </p>
   <p><input type="submit" value="Submit"/></p>
 </form>

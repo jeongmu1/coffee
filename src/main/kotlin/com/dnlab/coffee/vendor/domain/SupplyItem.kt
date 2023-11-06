@@ -22,7 +22,7 @@ class SupplyItem(
     fun toSupplyItemInfo(): SupplyItemInfo =
         SupplyItemInfo(
             ingredient = this.ingredient.name,
-            measurementUnit = this.ingredient.measurementUnit.unit,
+            measurementUnit = this.ingredient.measurementUnit.initial,
             amount = this.amount,
             price = this.price
         )
