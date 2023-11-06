@@ -37,14 +37,7 @@ class MenuService(
 
     @Transactional
     fun createMenu(menuForm: MenuForm) {
-        val menu = menuRepository.save(
-            Menu(
-                name = menuForm.name,
-                productType = menuForm.productType,
-                price = menuForm.price,
-                specialMenu = menuForm.specialMenu
-            )
-        )
+        val menu = menuRepository.save(menuForm.toEntity())
         recipeRepository.saveAll(menuForm.recipes.map { it.toEntity(menu) })
     }
 

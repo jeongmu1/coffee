@@ -1,5 +1,6 @@
 package com.dnlab.coffee.menu.dto
 
+import com.dnlab.coffee.menu.domain.Menu
 import com.dnlab.coffee.menu.domain.ProductType
 
 data class MenuForm(
@@ -8,4 +9,12 @@ data class MenuForm(
     val productType: ProductType,
     val specialMenu: Boolean,
     val recipes: List<RecipeForm> = mutableListOf()
-)
+) {
+    fun toEntity(): Menu =
+        Menu(
+            name = this.name,
+            productType = this.productType,
+            price = this.price,
+            specialMenu = this.specialMenu
+        )
+}
