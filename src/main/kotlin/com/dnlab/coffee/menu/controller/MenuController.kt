@@ -35,8 +35,7 @@ class MenuController(
         @RequestParam("menu", required = false) menuName: String?,
         model: ModelMap
     ): String {
-        model["menus"] =
-            if (menuName == null) menuService.getMenus() else menuService.getMenus(menuName)
+        model["menus"] = menuName?.let { menuService.getMenus(it) } ?: menuService.getMenus()
         return "menu/list"
     }
 
