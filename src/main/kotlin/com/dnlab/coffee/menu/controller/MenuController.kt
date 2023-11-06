@@ -52,7 +52,7 @@ class MenuController(
     @GetMapping("/new")
     @PreAuthorize("hasRole('ADMIN')")
     fun showMenuForm(): String {
-        return "/menu/new"
+        return "menu/new"
     }
 
     @PostMapping("/new")
