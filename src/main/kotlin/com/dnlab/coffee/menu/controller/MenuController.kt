@@ -87,7 +87,7 @@ class MenuController(
     @PreAuthorize("hasRole('ADMIN')")
     fun deleteRecipe(
         @PathVariable("recipeId") recipeId: Long,
-        @PathVariable menuId: String
+        @PathVariable("menuId") menuId: Long
     ): String {
         menuService.deleteRecipe(recipeId)
         return "redirect:/menu/$menuId"
