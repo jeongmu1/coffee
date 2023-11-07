@@ -37,7 +37,7 @@ class MenuController(
         @RequestParam("menu", required = false) menuName: String?,
         model: ModelMap
     ): String {
-        model["menus"] = menuName?.let { menuService.getMenus(it) } ?: menuService.getMenus()
+        model["menus"] = menuName?.let { menuService.getMenuDisplays(it) } ?: menuService.getMenuDisplays()
         return "menu/list"
     }
 
@@ -46,7 +46,7 @@ class MenuController(
         @PathVariable("menuId") menuId: Long,
         model: ModelMap
     ): String {
-        model["menu"] = menuService.getMenu(menuId)
+        model["menu"] = menuService.getMenuDisplay(menuId)
         model["recipes"] = menuService.getRecipesOfMenu(menuId)
         return "menu/detail"
     }
