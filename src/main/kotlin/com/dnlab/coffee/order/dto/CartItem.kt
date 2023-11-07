@@ -3,7 +3,6 @@ package com.dnlab.coffee.order.dto
 import com.dnlab.coffee.menu.domain.Menu
 import com.dnlab.coffee.order.domain.CustomerOrder
 import com.dnlab.coffee.order.domain.OrderMenu
-import com.dnlab.coffee.order.exception.OutOfStockException
 
 data class CartItem(
     val itemId: Long,
@@ -18,7 +17,6 @@ data class CartItem(
         )
 
     fun toEntity(menu: Menu, order: CustomerOrder): OrderMenu {
-        if (menu.isSoldOuted()) throw OutOfStockException(menu.name)
         return OrderMenu(
             customerOrder = order,
             menu = menu,

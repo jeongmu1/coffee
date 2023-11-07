@@ -1,9 +1,12 @@
 package com.dnlab.coffee.menu.service
 
+import com.dnlab.coffee.menu.domain.Ingredient
 import com.dnlab.coffee.menu.domain.Menu
 import com.dnlab.coffee.menu.domain.Recipe
 import com.dnlab.coffee.menu.dto.RecipeForm
 import com.dnlab.coffee.menu.repository.RecipeRepository
+import com.dnlab.coffee.order.domain.OrderMenu
+import com.dnlab.coffee.order.exception.OutOfStockException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,6 +37,11 @@ class RecipeService(
         recipe.amount = amount
     }
 
+    @Transactional
+    fun updateRecipesOnOrder(orderMenu: OrderMenu) {
+        orderMenu.menu.recipes.forEach { updateIngredientStock(it.ingredient, orderMenu.quantity * it.amount) }
+    }
+
     private fun RecipeForm.toEntity(menu: Menu): Recipe {
         val ingredient = ingredientService.findIngredientById(this.ingredientId)
 
@@ -42,5 +50,10 @@ class RecipeService(
             menu = menu,
             ingredient = ingredient
         )
+    }
+
+    private fun updateIngredientStock(ingredient: Ingredient, deduction: Double) {
+        if (ingredient.stock < deduction) throw OutOfStockException(ingredient.name)
+        ingredient.stock -= deduction
     }
 }

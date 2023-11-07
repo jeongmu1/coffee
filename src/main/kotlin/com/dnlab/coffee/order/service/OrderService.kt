@@ -1,6 +1,7 @@
 package com.dnlab.coffee.order.service
 
 import com.dnlab.coffee.menu.service.MenuService
+import com.dnlab.coffee.menu.service.RecipeService
 import com.dnlab.coffee.order.domain.CustomerOrder
 import com.dnlab.coffee.order.domain.PaymentType
 import com.dnlab.coffee.order.dto.*
@@ -15,7 +16,8 @@ class OrderService(
     private val customOrderRepository: CustomOrderRepository,
     private val orderMenuRepository: OrderMenuRepository,
     private val customerService: CustomerService,
-    private val menuService: MenuService
+    private val menuService: MenuService,
+    private val recipeService: RecipeService
 ) {
     @Transactional
     fun processOrder(customerPhone: String, paymentType: PaymentType, cart: Cart) {
@@ -28,7 +30,7 @@ class OrderService(
         )
         cart.items.forEach { cartItem ->
             val orderMenu = orderMenuRepository.save(cartItem.toEntity(menuService.getMenuById(cartItem.itemId), order))
-            orderMenu.menu.recipes.forEach { it.ingredient.stock -= orderMenu.quantity * it.amount }
+            recipeService.updateRecipesOnOrder(orderMenu)
         }
     }
 
