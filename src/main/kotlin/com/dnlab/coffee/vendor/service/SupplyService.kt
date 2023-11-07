@@ -38,10 +38,7 @@ class SupplyService(
         supplyItemRepository.saveAll(form.supplyItems.map {
             val ingredient = ingredientService.getIngredientById(it.ingredientId)
             ingredientService.updateStockOnSupply(ingredient, it.amount)
-            it.toEntity(
-                supply = supply,
-                ingredient = ingredient
-            )
+            it.toEntity(supply, ingredient)
         })
     }
 
