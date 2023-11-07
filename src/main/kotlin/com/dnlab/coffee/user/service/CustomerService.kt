@@ -15,4 +15,7 @@ class CustomerService(
     fun addCustomer(customer: Customer) {
         customerRepository.save(customer)
     }
+
+    fun getCustomerByPhone(customerPhone: String): Customer = customerRepository.findCustomerByPhone(customerPhone)
+        ?: throw NoSuchElementException("해당 고객을 찾을 수 없습니다 : $customerPhone")
 }

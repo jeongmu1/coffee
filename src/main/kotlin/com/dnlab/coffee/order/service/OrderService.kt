@@ -8,21 +8,20 @@ import com.dnlab.coffee.order.dto.*
 import com.dnlab.coffee.order.exception.OutOfStockException
 import com.dnlab.coffee.order.repository.CustomOrderRepository
 import com.dnlab.coffee.order.repository.OrderMenuRepository
-import com.dnlab.coffee.user.repository.CustomerRepository
+import com.dnlab.coffee.user.service.CustomerService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class OrderService(
-    private val customerRepository: CustomerRepository,
+    private val customerService: CustomerService,
     private val customOrderRepository: CustomOrderRepository,
     private val orderMenuRepository: OrderMenuRepository,
     private val menuRepository: MenuRepository
 ) {
     @Transactional
     fun processOrder(customerPhone: String, paymentType: PaymentType, cart: Cart) {
-        val customer = customerRepository.findCustomerByPhone(customerPhone)
-            ?: throw NoSuchElementException("해당 전화번호를 가진 사용자가 없습니다.")
+        val customer = customerService.getCustomerByPhone(customerPhone)
         val order = customOrderRepository.save(
             CustomerOrder(
                 customer = customer,
