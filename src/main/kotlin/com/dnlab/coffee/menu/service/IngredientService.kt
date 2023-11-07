@@ -24,7 +24,7 @@ class IngredientService(
         findIngredientById(amountForm.ingredientId).stock = amountForm.amount
     }
 
-    private fun findIngredientById(ingredientId: Long): Ingredient =
+    fun findIngredientById(ingredientId: Long): Ingredient =
         ingredientRepository.findIngredientById(ingredientId)
             ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다 : $ingredientId")
 }

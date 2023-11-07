@@ -16,7 +16,7 @@ class Menu(
     @Column(nullable = false)
     var specialMenu: Boolean
 ) : BaseTimeEntity() {
-    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     private val _recipes: MutableList<Recipe> = mutableListOf()
     val recipes: List<Recipe>
         get() = _recipes

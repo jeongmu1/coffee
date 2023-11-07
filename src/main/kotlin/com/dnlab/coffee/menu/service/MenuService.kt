@@ -1,19 +1,15 @@
 package com.dnlab.coffee.menu.service
 
 import com.dnlab.coffee.menu.domain.Menu
-import com.dnlab.coffee.menu.domain.Recipe
 import com.dnlab.coffee.menu.dto.*
-import com.dnlab.coffee.menu.repository.IngredientRepository
 import com.dnlab.coffee.menu.repository.MenuRepository
-import com.dnlab.coffee.menu.repository.RecipeRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MenuService(
     private val menuRepository: MenuRepository,
-    private val ingredientRepository: IngredientRepository,
-    private val recipeRepository: RecipeRepository
+    private val recipeService: RecipeService
 ) {
 
     @Transactional(readOnly = true)
@@ -28,31 +24,23 @@ class MenuService(
     @Transactional
     fun createMenu(menuForm: MenuForm) {
         val menu = menuRepository.save(menuForm.toEntity())
-        recipeRepository.saveAll(menuForm.recipes.map { it.toEntity(menu) })
+        recipeService.addRecipesOfMenu(menuForm.recipes, menu)
     }
 
     fun getRecipesOfMenu(menuId: Long): List<RecipeInfo> {
         val menu = findMenuById(menuId)
-        return recipeRepository.findRecipesByMenu(menu).map { it.toRecipeInfo() }
+        return recipeService.getRecipesOfMenu(menu).map { it.toRecipeInfo() }
     }
 
-    @Transactional
-    fun updateAmountOfRecipe(recipeId: Long, amount: Double) {
-        val recipe = recipeRepository.findRecipeById(recipeId)
-            ?: throw NoSuchElementException("해당 레시피를 찾을 수 없습니다 : $recipeId")
-        recipe.amount = amount
-    }
-
-    fun deleteRecipe(recipeId: Long) {
-        val recipe = recipeRepository.findRecipeById(recipeId)
-            ?: throw NoSuchElementException("해당 레시피를 찾을 수 없습니다 : $recipeId")
-        recipeRepository.delete(recipe)
+    fun removeMenu(menuId: Long) {
+        val menu = findMenuById(menuId)
+        menuRepository.delete(menu)
     }
 
     @Transactional
     fun addRecipes(menuId: Long, recipeForm: NewRecipeForm) {
         val menu = findMenuById(menuId)
-        recipeRepository.saveAll(recipeForm.recipes.map { it.toEntity(menu) })
+        recipeService.addRecipesOfMenu(recipeForm.recipes, menu)
     }
 
     @Transactional
@@ -61,18 +49,6 @@ class MenuService(
         menu.specialMenu = specialMenu
     }
 
-
     private fun findMenuById(menuId: Long): Menu = menuRepository.findMenuById(menuId)
-        ?: throw NoSuchElementException("해당 메뉴는 존재하지 않습니다 : $menuId")
-
-    private fun RecipeForm.toEntity(menu: Menu): Recipe {
-        val ingredient = ingredientRepository.findIngredientById(this.ingredientId)
-            ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다 : ingredientId = $ingredientId")
-
-        return Recipe(
-            amount = this.amount,
-            menu = menu,
-            ingredient = ingredient
-        )
-    }
+        ?: throw NoSuchElementException("해당 메뉴를 찾을 수 없습니다. : $menuId")
 }

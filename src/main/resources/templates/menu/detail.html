@@ -110,6 +110,9 @@
 
 </div>
 <a th:href="@{/menu}">메뉴로 돌아가기</a>
+<form th:action="@{/menu/{menuId}(menuId=${menu.id})}" th:method="delete">
+  <input type="submit" value="메뉴삭제">
+</form>
 <script th:src="@{/js/form.js}"></script>
 </body>
 </html>

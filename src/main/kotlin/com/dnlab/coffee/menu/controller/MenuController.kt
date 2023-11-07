@@ -6,6 +6,7 @@ import com.dnlab.coffee.menu.dto.MenuForm
 import com.dnlab.coffee.menu.dto.NewRecipeForm
 import com.dnlab.coffee.menu.service.IngredientService
 import com.dnlab.coffee.menu.service.MenuService
+import com.dnlab.coffee.menu.service.RecipeService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/menu")
 class MenuController(
     private val menuService: MenuService,
+    private val recipeService: RecipeService,
     private val ingredientService: IngredientService
 ) {
     @ModelAttribute("productTypes")
@@ -62,6 +64,13 @@ class MenuController(
         return "redirect:/menu"
     }
 
+    @DeleteMapping("/{menuId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun removeMenu(@PathVariable("menuId") menuId: Long): String {
+        menuService.removeMenu(menuId)
+        return "redirect:/menu"
+    }
+
     @PostMapping("/{menuId}/recipe")
     @PreAuthorize("hasRole('ADMIN')")
     fun addRecipe(
@@ -79,7 +88,7 @@ class MenuController(
         @PathVariable("recipeId") recipeId: Long,
         amount: Double
     ): String {
-        menuService.updateAmountOfRecipe(recipeId, amount)
+        recipeService.updateAmountOfRecipe(recipeId, amount)
         return "redirect:/menu/$menuId"
     }
 
@@ -89,7 +98,7 @@ class MenuController(
         @PathVariable("recipeId") recipeId: Long,
         @PathVariable("menuId") menuId: Long
     ): String {
-        menuService.deleteRecipe(recipeId)
+        recipeService.removeRecipe(recipeId)
         return "redirect:/menu/$menuId"
     }
 

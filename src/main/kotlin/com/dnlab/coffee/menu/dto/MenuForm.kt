@@ -7,7 +7,7 @@ data class MenuForm(
     val name: String,
     val price: Int,
     val productType: ProductType,
-    val specialMenu: Boolean,
+    val specialMenu: Boolean = false,
     val recipes: List<RecipeForm> = mutableListOf()
 ) {
     fun toEntity(): Menu =
