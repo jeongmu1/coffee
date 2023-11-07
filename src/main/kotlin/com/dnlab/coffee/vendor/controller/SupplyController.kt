@@ -45,7 +45,7 @@ class SupplyController(
 
     @PostMapping("delivery-date")
     fun addActualDeliveryDate(form: ActualDeliveryDateForm): String {
-        supplyService.inputActualDeliveryDate(form)
+        supplyService.updateActualDeliveryDate(form)
         return "redirect:/supply"
     }
 

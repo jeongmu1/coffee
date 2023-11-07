@@ -25,7 +25,7 @@ class SupplyService(
     fun getSupplyDetail(supplyId: Long): SupplyInfoDetail = getSupply(supplyId).toSupplyInfoDetail()
 
     @Transactional
-    fun inputActualDeliveryDate(form: ActualDeliveryDateForm) {
+    fun updateActualDeliveryDate(form: ActualDeliveryDateForm) {
         val supply = getSupply(form.supplyId)
         supply.actualDeliveryDate = form.actualDeliveryDate
     }
