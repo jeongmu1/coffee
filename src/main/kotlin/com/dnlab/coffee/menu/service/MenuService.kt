@@ -33,6 +33,7 @@ class MenuService(
         return recipeService.getRecipesOfMenu(menu).map { it.toRecipeInfo() }
     }
 
+    @Transactional
     fun removeMenu(menuId: Long) {
         val menu = findMenuById(menuId)
         menuRepository.delete(menu)
