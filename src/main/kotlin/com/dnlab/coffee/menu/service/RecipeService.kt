@@ -18,7 +18,12 @@ class RecipeService(
 
     @Transactional
     fun addRecipesToMenu(recipeForms: List<RecipeForm>, menu: Menu): List<Recipe> =
-        recipeRepository.saveAll(recipeForms.map { it.toEntity(menu) })
+        recipeRepository.saveAll(recipeForms.map {
+            it.toEntity(
+                menu,
+                ingredientService.findIngredientById(it.ingredientId)
+            )
+        })
 
     fun getRecipesOfMenu(menu: Menu): List<Recipe> = recipeRepository.findRecipesByMenu(menu)
 
@@ -40,16 +45,6 @@ class RecipeService(
     @Transactional
     fun updateRecipesOnOrder(orderMenu: OrderMenu) {
         orderMenu.menu.recipes.forEach { updateIngredientStock(it.ingredient, orderMenu.quantity * it.amount) }
-    }
-
-    private fun RecipeForm.toEntity(menu: Menu): Recipe {
-        val ingredient = ingredientService.findIngredientById(this.ingredientId)
-
-        return Recipe(
-            amount = this.amount,
-            menu = menu,
-            ingredient = ingredient
-        )
     }
 
     private fun updateIngredientStock(ingredient: Ingredient, deduction: Double) {
