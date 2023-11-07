@@ -14,7 +14,7 @@ class RecipeService(
 ) {
 
     @Transactional
-    fun addRecipesOfMenu(recipeForms: List<RecipeForm>, menu: Menu): List<Recipe> =
+    fun addRecipesToMenu(recipeForms: List<RecipeForm>, menu: Menu): List<Recipe> =
         recipeRepository.saveAll(recipeForms.map { it.toEntity(menu) })
 
     fun getRecipesOfMenu(menu: Menu): List<Recipe> = recipeRepository.findRecipesByMenu(menu)

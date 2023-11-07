@@ -24,9 +24,10 @@ class MenuService(
     @Transactional
     fun createMenu(menuForm: MenuForm) {
         val menu = menuRepository.save(menuForm.toEntity())
-        recipeService.addRecipesOfMenu(menuForm.recipes, menu)
+        recipeService.addRecipesToMenu(menuForm.recipes, menu)
     }
 
+    @Transactional(readOnly = true)
     fun getRecipesOfMenu(menuId: Long): List<RecipeInfo> {
         val menu = findMenuById(menuId)
         return recipeService.getRecipesOfMenu(menu).map { it.toRecipeInfo() }
@@ -40,7 +41,7 @@ class MenuService(
     @Transactional
     fun addRecipes(menuId: Long, recipeForm: NewRecipeForm) {
         val menu = findMenuById(menuId)
-        recipeService.addRecipesOfMenu(recipeForm.recipes, menu)
+        recipeService.addRecipesToMenu(recipeForm.recipes, menu)
     }
 
     @Transactional
