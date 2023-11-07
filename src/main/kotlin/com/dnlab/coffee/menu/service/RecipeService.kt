@@ -22,6 +22,7 @@ class RecipeService(
     fun getRecipeById(recipeId: Long): Recipe =
         recipeRepository.findRecipeById(recipeId) ?: throw NoSuchElementException("해당 레시피를 찾을 수 없습니다 : $recipeId")
 
+    @Transactional
     fun removeRecipe(recipeId: Long) {
         val recipe = getRecipeById(recipeId)
         recipeRepository.delete(recipe)
