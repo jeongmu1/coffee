@@ -12,4 +12,8 @@ class Ingredient(
     val measurementUnit: MeasurementUnit,
     @Column(nullable = false)
     var stock: Double = 0.0
-): BaseEntity()
+): BaseEntity() {
+    fun addStock(amount: Double) {
+        this.stock += amount
+    }
+}
