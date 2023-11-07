@@ -16,4 +16,8 @@ class VendorService(
     fun saveNewVendor(vendorForm: VendorForm) {
         vendorRepository.save(Vendor(name = vendorForm.name, address = vendorForm.address))
     }
+
+    fun getVendor(vendorId: Long): Vendor =
+        vendorRepository.findVendorById(vendorId)
+            ?: throw NoSuchElementException("해당 공급업체를 찾을 수 없습니다 : $vendorId")
 }

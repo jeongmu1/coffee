@@ -21,10 +21,15 @@ class IngredientService(
 
     @Transactional
     fun updateAmount(amountForm: AmountForm) {
-        findIngredientById(amountForm.ingredientId).stock = amountForm.amount
+        getIngredientById(amountForm.ingredientId).stock = amountForm.amount
     }
 
-    fun findIngredientById(ingredientId: Long): Ingredient =
+    fun getIngredientById(ingredientId: Long): Ingredient =
         ingredientRepository.findIngredientById(ingredientId)
             ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다 : $ingredientId")
+
+    @Transactional
+    fun updateStockOnSupply(ingredient: Ingredient, amount: Double) {
+        ingredient.stock += amount
+    }
 }

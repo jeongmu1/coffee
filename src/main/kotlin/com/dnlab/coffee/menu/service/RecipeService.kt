@@ -21,7 +21,7 @@ class RecipeService(
         recipeRepository.saveAll(recipeForms.map {
             it.toEntity(
                 menu,
-                ingredientService.findIngredientById(it.ingredientId)
+                ingredientService.getIngredientById(it.ingredientId)
             )
         })
 

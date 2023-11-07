@@ -1,12 +1,10 @@
 package com.dnlab.coffee.vendor.service
 
-import com.dnlab.coffee.menu.repository.IngredientRepository
+import com.dnlab.coffee.menu.service.IngredientService
 import com.dnlab.coffee.vendor.domain.Supply
-import com.dnlab.coffee.vendor.domain.SupplyItem
 import com.dnlab.coffee.vendor.dto.*
 import com.dnlab.coffee.vendor.repository.SupplyItemRepository
 import com.dnlab.coffee.vendor.repository.SupplyRepository
-import com.dnlab.coffee.vendor.repository.VendorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,52 +12,39 @@ import org.springframework.transaction.annotation.Transactional
 class SupplyService(
     private val supplyRepository: SupplyRepository,
     private val supplyItemRepository: SupplyItemRepository,
-    private val vendorRepository: VendorRepository,
-    private val ingredientRepository: IngredientRepository
+    private val ingredientService: IngredientService,
+    private val vendorService: VendorService
 ) {
 
+    @Transactional(readOnly = true)
     fun getSupplyInfoList(): List<SupplyInfo> =
         supplyRepository.findAll()
             .map { it.toSupplyInfo() }
 
     @Transactional(readOnly = true)
-    fun getSupplyDetail(supplyId: Long): SupplyInfoDetail =
-        supplyRepository.findSupplyById(supplyId)
-            ?.run { toSupplyInfoDetail() }
-            ?: throw NoSuchElementException("해당 공급 기록을 찾을 수 없습니다.")
+    fun getSupplyDetail(supplyId: Long): SupplyInfoDetail = getSupply(supplyId).toSupplyInfoDetail()
 
     @Transactional
     fun inputActualDeliveryDate(form: ActualDeliveryDateForm) {
-        val supply = supplyRepository.findSupplyById(form.supplyId)
-            ?: throw NoSuchElementException("해당 공급을 찾을 수 없습니다.")
+        val supply = getSupply(form.supplyId)
         supply.actualDeliveryDate = form.actualDeliveryDate
     }
 
     @Transactional
     fun addSupply(form: SupplyForm) {
-        val vendor = vendorRepository.findVendorById(form.vendorId) ?: throw NoSuchElementException(
-            "해당 공급업체를 찾을 수 없습니다."
-        )
-        val supply = supplyRepository.save(
-            Supply(
-                deliveryDate = form.deliveryDate,
-                actualDeliveryDate = form.actualDeliveryDate,
-                vendor = vendor
+        val vendor = vendorService.getVendor(form.vendorId)
+        val supply = supplyRepository.save(form.toEntity(vendor))
+
+        supplyItemRepository.saveAll(form.supplyItems.map {
+            val ingredient = ingredientService.getIngredientById(it.ingredientId)
+            ingredientService.updateStockOnSupply(ingredient, it.amount)
+            it.toEntity(
+                supply = supply,
+                ingredient = ingredient
             )
-        )
-
-        supplyItemRepository.saveAll(form.supplyItems.map { it.toEntity(supply) })
+        })
     }
 
-    private fun SupplyItemForm.toEntity(supply: Supply): SupplyItem {
-        val ingredient = ingredientRepository.findIngredientById(this.ingredientId)
-            ?: throw NoSuchElementException("해당 재료를 찾을 수 없습니다.")
-        ingredient.stock += this.amount
-        return SupplyItem(
-            supply = supply,
-            ingredient = ingredient,
-            amount = this.amount,
-            price = this.price
-        )
-    }
+    private fun getSupply(supplyId: Long): Supply =
+        supplyRepository.findSupplyById(supplyId) ?: throw NoSuchElementException("해당 공급을 찾을 수 없습니다 : $supplyId")
 }
