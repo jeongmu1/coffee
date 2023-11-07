@@ -15,7 +15,8 @@ class CustomerOrder(
     val customer: Customer,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val paymentType: PaymentType
+    val paymentType: PaymentType,
+    val pointUse: Int? = 0
 ) : BaseEntity() {
     @OneToMany(mappedBy = "customerOrder", fetch = FetchType.LAZY)
     private val _orderMenus: MutableList<OrderMenu> = mutableListOf()

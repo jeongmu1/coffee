@@ -16,10 +16,21 @@ class Customer(
     val phone: String,
 
     @Column(nullable = false)
-    val address: String
+    val address: String,
+
+    @Column
+    var point: Int = 0,
+
+    @Column
+    var stamp: Int = 0
 ) : BaseTimeEntity() {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private val _customerOrders: MutableList<CustomerOrder> = mutableListOf()
     val customerOrders: List<CustomerOrder>
         get() = _customerOrders
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private val _pointHistories: MutableList<PointHistory> = mutableListOf()
+    val pointHistories: List<PointHistory>
+        get() = _pointHistories
 }

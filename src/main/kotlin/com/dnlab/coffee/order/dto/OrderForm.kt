@@ -4,5 +4,6 @@ import com.dnlab.coffee.order.domain.PaymentType
 
 data class OrderForm(
     val customerPhone: String,
-    val paymentType: PaymentType
+    val paymentType: PaymentType,
+    var pointUse: Int = 0,
 )

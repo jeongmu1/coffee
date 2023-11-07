@@ -93,7 +93,7 @@ class OrderController(
         }
 
         val cart = getCartFromSession(session)
-        orderService.processOrder(orderForm.customerPhone, orderForm.paymentType, cart)
+        orderService.processOrder(orderForm.customerPhone, orderForm.paymentType, cart, orderForm.pointUse)
         cart.items.clear()
 
         return "redirect:/order/complete"

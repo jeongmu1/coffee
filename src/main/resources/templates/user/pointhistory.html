@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <title>포인트기록</title>
+</head>
+<body>
+<h1>포인트기록</h1>
+<table>
+  <thead>
+  <tr>
+    <th>변경량</th>
+    <th>내용</th>
+    <th>등록일</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="history : ${histories}">
+    <td th:text="${history.changes}"></td>
+    <td th:text="${history.content}"></td>
+    <td th:text="${history.createdAt}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

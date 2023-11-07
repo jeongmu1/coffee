@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
-  <meta charset="UTF-8">
-  <title>결제</title>
+    <meta charset="UTF-8">
+    <title>결제</title>
 </head>
 <body>
 <h1>결제하기</h1>
 <form th:action="@{/order}" method="post">
-  <label for="paymentType">지불 방식:</label>
-  <select id="paymentType" name="paymentType">
-    <option th:each="type : ${T(com.dnlab.coffee.order.domain.PaymentType).values()}"
-            th:value="${type.name()}"
-            th:text="${type.value}"></option>
-  </select>
+    <label for="paymentType">지불 방식:</label>
+    <select id="paymentType" name="paymentType">
+        <option th:each="type : ${T(com.dnlab.coffee.order.domain.PaymentType).values()}"
+                th:value="${type.name()}"
+                th:text="${type.value}"></option>
+    </select>
 
-  <label for="customerPhone">휴대전화번호:</label>
-  <input type="text" id="customerPhone" name="customerPhone" placeholder="010-1234-5678">
+    <label for="customerPhone">휴대전화번호:</label>
+    <input type="text" id="customerPhone" name="customerPhone" placeholder="010-1234-5678">
 
-  <input type="submit" value="제출">
+    <label for="pointUse"><input type="number" id="pointUse" name="pointUse"></label>
+
+    <input type="submit" value="제출">
 </form>
 </body>
 </html>
