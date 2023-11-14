@@ -27,8 +27,7 @@
 <span>제품명 : <span th:text="${menu.name}"></span></span><br>
 <span>가격 : <span th:text="${menu.price}"></span></span><br>
 <span>분류 : <span th:text="${menu.productType}"></span></span><br>
-<span>스페셜메뉴 여부 : <span th:if="${menu.specialMenu}">O</span>
-  <span th:if="${!menu.specialMenu}">X</span></span>
+<span>추천 여부 : <span th:text="${menu.kind}"></span></span>
 
 <form id="orderForm" method="post" th:action="@{/order/cart}">
   <input type="hidden" id="itemId" name="itemId" th:value="*{menu.id}">
@@ -40,11 +39,11 @@
 <hr>
 <div sec:authorize="isAuthenticated()">
   <h1>특별메뉴</h1>
-  <form th:action="@{/menu/{menuId}/special-menu(menuId=${menu.id})}" th:method="patch">
-      <label for="specialMenu">스페셜메뉴여부:
-        <input type="checkbox" id="specialMenu" name="specialMenu" th:checked="${menu.specialMenu}">
-        <input type="submit" >
-      </label>
+  <form th:action="@{/menu/{menuId}/recommend(menuId=${menu.id})}" th:method="patch">
+    <label for="kind">
+      <input type="text" id="kind" name="kind">
+    </label>
+    <input type="submit">
   </form>
 
   <h1>레시피</h1>

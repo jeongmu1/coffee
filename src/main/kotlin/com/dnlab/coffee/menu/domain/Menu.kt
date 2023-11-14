@@ -14,7 +14,10 @@ class Menu(
     @Column(nullable = false)
     val productType: ProductType,
     @Column(nullable = false)
-    var specialMenu: Boolean
+    var specialMenu: Boolean,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    var kind: SpecialMenu?
 ) : BaseTimeEntity() {
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     private val _recipes: MutableList<Recipe> = mutableListOf()
@@ -31,6 +34,7 @@ class Menu(
             productType = this.productType.title,
             soldOuted = this.isSoldOuted(),
             recipes = this.recipes.map { it.toRecipeInfo() },
-            specialMenu = this.specialMenu
+            specialMenu = this.specialMenu,
+            kind = this.kind?.name
         )
 }

@@ -4,6 +4,7 @@ import com.dnlab.coffee.menu.domain.Ingredient
 import com.dnlab.coffee.menu.domain.ProductType
 import com.dnlab.coffee.menu.dto.MenuForm
 import com.dnlab.coffee.menu.dto.NewRecipeForm
+import com.dnlab.coffee.menu.dto.RecommendForm
 import com.dnlab.coffee.menu.service.IngredientService
 import com.dnlab.coffee.menu.service.MenuService
 import com.dnlab.coffee.menu.service.RecipeService
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -109,6 +111,16 @@ class MenuController(
         specialMenu: Boolean
     ): String {
         menuService.updateSpecialMenu(menuId, specialMenu)
+        return "redirect:/menu/$menuId"
+    }
+
+    @PatchMapping("/{menuId}/recommend")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun updateRecommend(
+        @PathVariable("menuId") menuId: Long,
+        recommendForm: RecommendForm
+    ): String {
+        menuService.updateRecommend(menuId, recommendForm)
         return "redirect:/menu/$menuId"
     }
 }

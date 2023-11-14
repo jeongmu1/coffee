@@ -15,6 +15,7 @@ data class MenuForm(
             name = this.name,
             productType = this.productType,
             price = this.price,
-            specialMenu = this.specialMenu
+            specialMenu = this.specialMenu,
+            kind = null
         )
 }
